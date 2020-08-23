@@ -49,15 +49,20 @@
 	};
 
 	// Component Class Definition
-	function Component(componentName, element = undefined) {
-		Object.defineProperties(this, {
-			element: {
-				enumerable: true,
-				value: element,
-			},
-		});
+	function Component(componentName, {
+		template,
+		element,
+	} = {
+		template: undefined,
+		element: undefined,
+	}) {
 		if (element instanceof Element) {
-			element.setAttribute('y-component', componentName);
+			Object.defineProperties(this, {
+				element: {
+					enumerable: true,
+					value: element,
+				},
+			});
 		}
 		return Object.assign(this, {
 			name: componentName,
@@ -192,12 +197,6 @@
 		window.onpopstate();
 	};
 
-	document.addEventListener('DOMContentLoaded', () => {
-		if (document.querySelector('body > nav') instanceof Element) {
-			yodasws.component('topNav', document.querySelector('body > nav'));
-		}
-	});
-
 	// Load Route Template
 	function loadRoute(route) {
 		console.log('Route:', route);
@@ -302,5 +301,33 @@
 		}
 		return obj[name] || (obj[name] = factory());
 	}
+
+	// All resources loaded, now start building components
+	document.addEventListener('DOMContentLoaded', () => {
+		if (document.querySelector('body > nav') instanceof Element) {
+			yodasws.component('topNav', {
+				element: document.querySelector('body > nav'),
+			});
+		}
+
+		Object.entries(yodasws.components).forEach(([key, val]) => {
+			if (typeof template === 'string') {
+				let element = document.getElementById(template);
+				if (!(element instanceof Element)) {
+					element = document.querySelector(template);
+				}
+				if (!(element instanceof Element)) {
+					element = document.createElement('template');
+					element.innerHTML = template;
+				}
+				Object.defineProperties(val, {
+					template: {
+						enumerable: true,
+						value: element,
+					},
+				});
+			}
+		});
+	});
 
 })(window);
