@@ -7,3 +7,40 @@ td,
 th {
 	border: 1px solid black;
 }
+
+th {
+	background: lightgrey;
+}
+
+td,
+th {
+	padding: 3px 5px;
+	text-align: center;
+}
+
+td.red {
+	background: #e06070;
+}
+td.pink {
+	background: #ff69b4;
+	background: #f270b0
+}
+td.black {
+	background: #404040;
+	color: white;
+}
+td.orange {
+	background: #ffb550;
+}
+td.yellow {
+	background: #ffff50;
+}
+td.purple {
+	background: rebeccapurple;
+	color: whitesmoke;
+}
+td.blue {
+	background: lightblue;
+	background: #304FF4;
+	color: #ddd;
+}
